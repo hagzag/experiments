@@ -153,6 +153,7 @@ spec:
     targetRevision: {{ .Values.infra_repo_ref }}
     helm:
       values: |
+        controller:
           service:
             annotations:
               external-dns.alpha.kubernetes.io/hostname: {{ .Values.argo_project }}-external.{{ .Values.domain_suffix }}

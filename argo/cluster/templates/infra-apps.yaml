@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-secrets
+  name: {{ .Values.argo_project }}-external-secrets
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
 spec:
@@ -21,7 +21,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: common-manifests
+  name: {{ .Values.argo_project }}-common-manifests
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
@@ -45,7 +45,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: {{ .Values.argo_project }}-external-dns
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
@@ -65,7 +65,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: {{ .Values.argo_project }}-cert-manager
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
@@ -85,7 +85,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nfs-server-provisioner
+  name: {{ .Values.argo_project }}-nfs-server-provisioner
 spec:
   project: {{ .Values.argo_project }}
   source:
@@ -103,7 +103,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: elasticsearch
+  name: {{ .Values.argo_project }}-elasticsearch
 spec:
   project: {{ .Values.argo_project }}
   source:
@@ -122,7 +122,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kibana
+  name: {{ .Values.argo_project }}-kibana
 spec:
   project: {{ .Values.argo_project }}
   source:
@@ -140,7 +140,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: fluentd
+  name: {{ .Values.argo_project }}-fluentd
 spec:
   project: {{ .Values.argo_project }}
   source:

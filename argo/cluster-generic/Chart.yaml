@@ -1,5 +1,5 @@
 apiVersion: v2
-name: tensorleap-cluster
+name: cluster-generic
 description: A Helm chart for common-manifests
 
 # A chart can be either an 'application' or a 'library' chart.

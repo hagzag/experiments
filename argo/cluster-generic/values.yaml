@@ -8,7 +8,7 @@
 argo_project: placeholder
 gcp_project: placeholder
 
-infra_repo_ssh_url: "git@github.com:tensorleap/infra.git"
+infra_repo_ssh_url: placeholder
 infra_repo_ref: HEAD
 
 destination_cluster: null 

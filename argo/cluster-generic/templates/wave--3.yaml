@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: data
-	annotations:
+  annotations:
     argocd.argoproj.io/sync-wave: "-3"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -12,7 +12,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: ingress
-	annotations:
+  annotations:
     argocd.argoproj.io/sync-wave: "-3"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -21,7 +21,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: logging
-	annotations:
+  annotations:
     argocd.argoproj.io/sync-wave: "-3"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -30,7 +30,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: monitoring
-	annotations:
+  annotations:
     argocd.argoproj.io/sync-wave: "-3"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -39,7 +39,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: cert-manager
-	annotations:
+  annotations:
     argocd.argoproj.io/sync-wave: "-3"
   finalizers:
   - resources-finalizer.argocd.argoproj.io

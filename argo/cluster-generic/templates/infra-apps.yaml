@@ -154,6 +154,8 @@ spec:
     helm:
       values: |
         controller:
+          publishService:
+            enabled: true
           service:
             annotations:
               external-dns.alpha.kubernetes.io/hostname: {{ .Values.argo_project }}-external.{{ .Values.domain_suffix }}

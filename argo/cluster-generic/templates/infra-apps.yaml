@@ -43,9 +43,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    # see: https://cert-manager.io/docs/installation/kubernetes/
-  # syncOptions:
-  #   - Validate=false
+    see: https://cert-manager.io/docs/installation/kubernetes/
+  syncOptions:
+    - Validate=false
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application

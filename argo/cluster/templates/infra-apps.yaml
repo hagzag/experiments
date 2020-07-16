@@ -2,8 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ .Values.argo_project }}-external-secrets
-  annotations:
-    argocd.argoproj.io/sync-wave: "-2"
 spec:
   project: {{ .Values.argo_project }}
   source:
@@ -22,8 +20,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ .Values.argo_project }}-common-manifests
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: {{ .Values.argo_project }}
   source:
@@ -46,8 +42,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ .Values.argo_project }}-external-dns
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: {{ .Values.argo_project }}
   source:
@@ -66,8 +60,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ .Values.argo_project }}-cert-manager
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: {{ .Values.argo_project }}
   source:

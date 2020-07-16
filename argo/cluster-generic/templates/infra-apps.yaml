@@ -67,3 +67,76 @@ spec:
       prune: true
       selfHeal: true
 
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nfs-server-provisioner
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/nfs-server-provisioner
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argo_project }}-elasticsearch
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/elasticsearch
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argo_project }}-kibana
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/kibana
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argo_project }}-fluentd
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/fluentd
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

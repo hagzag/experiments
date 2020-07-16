@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-secrets
+  name: {{ .Values.argo_project }}-external-secrets
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
 spec:
@@ -22,7 +22,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: {{ .Values.argo_project }}-external-dns
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
 spec:

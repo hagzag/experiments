@@ -146,7 +146,7 @@ kind: Application
 metadata:
   name: {{ .Values.argo_project }}-external-ingress
 spec:
-  project: ops
+  project: {{ .Values.argo_project }}
   source:
     repoURL: {{ .Values.infra_repo_ssh_url }}
     path: .cd/bases/apps/external-ingress

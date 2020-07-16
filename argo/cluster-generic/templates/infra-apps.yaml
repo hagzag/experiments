@@ -157,7 +157,7 @@ spec:
     #         annotations:
     #           external-dns.alpha.kubernetes.io/hostname: {{ .Values.argo_project }}-external.tensorleap.ai
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: {{ .Values.destination_cluster }}
     namespace: ingress
   syncPolicy:
     automated:

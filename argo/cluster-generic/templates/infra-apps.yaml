@@ -47,23 +47,23 @@ spec:
   # syncOptions:
   #   - Validate=false
 ---
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: {{ .Values.argo_project }}-external-dns
-#   annotations:
-#     argocd.argoproj.io/sync-wave: "-2"
-# spec:
-#   project: {{ .Values.argo_project }}
-#   source:
-#     repoURL: {{ .Values.infra_repo_ssh_url }}
-#     path: .cd/bases/apps/external-dns
-#     targetRevision: {{ .Values.infra_repo_ref }}
-#   destination:
-#     server: {{ .Values.destination_cluster }}
-#     namespace: kube-system
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argo_project }}-external-dns
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/external-dns
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 

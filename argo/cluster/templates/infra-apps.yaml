@@ -1,0 +1,156 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-secrets
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/external-secrets
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: common-manifests
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/common-manifests
+    targetRevision: {{ .Values.infra_repo_ref }}
+    helm:
+      parameters:
+        - name: project
+          value: {{ .Values.gcp_project }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/external-dns
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/cert-manager
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nfs-server-provisioner
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/nfs-server-provisioner
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elasticsearch
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/elasticsearch
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kibana
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/kibana
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fluentd
+spec:
+  project: {{ .Values.argo_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_ssh_url }}
+    path: .cd/bases/apps/fluentd
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

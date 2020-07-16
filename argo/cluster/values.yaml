@@ -1,0 +1,33 @@
+# Default values for tensorleap-node-server.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# global:
+    # gcp_project: null
+    # argo_project: null
+argo_project: placeholder
+gcp_project: placeholder
+
+infra_repo_ssh_url: "git@github.com:tensorleap/infra.git"
+infra_repo_ref: HEAD
+
+destination_cluster: null 
+destination_namespace: argocd
+
+# external-secrets:
+#   enabled: true
+#   sync_wave: "-1"
+#   values_oveerides: |
+#     key: val
+
+# common-manifests:
+#   enabled: true
+#   sync_wave: "-2"
+#   values_oveerides: |
+#     key: val
+
+# external-dns:
+#   enabled: true
+#   sync_wave: "-2"
+#   values_oveerides: |
+#     key: val

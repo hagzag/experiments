@@ -6,7 +6,7 @@
     # gcp_project: null
     # argo_project: null
 argo_project: pa
-gcp_project: pa
+gcp_project: tensorleap-pa
 
 domain_suffix: tensorleap.ai
 

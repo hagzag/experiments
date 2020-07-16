@@ -59,6 +59,38 @@ spec:
     repoURL: {{ .Values.infra_repo_ssh_url }}
     path: .cd/bases/apps/external-dns
     targetRevision: {{ .Values.infra_repo_ref }}
+    helm: |
+      sources:
+        # - crd
+        - service
+        - ingress
+      provider: google
+      google:
+        ## Google Project to use
+        ##
+        project: "{{ .Values.gcp_project }}"
+        ## Google Application Credentials
+        ##
+        serviceAccountSecret: "gcp-sa-secret"
+        # serviceAccountKey: "external-dns"
+        serviceAccountSecretKey: "key.json"
+      resources:
+        limits:
+          cpu: 50m
+          memory: 50Mi
+        requests:
+          memory: 50Mi
+          cpu: 10m
+      metrics:
+        enabled: false
+        namespace: monitoring
+        serviceMonitor:
+          enabled: false
+      nodeSelector:
+        cloud.google.com/gke-nodepool: default-pool
+      policy: sync
+      registry: "txt"
+      txtOwnerId: {{ .Values.gcp_project }}
   destination:
     server: {{ .Values.destination_cluster }}
     namespace: kube-system

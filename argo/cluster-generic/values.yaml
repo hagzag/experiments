@@ -8,6 +8,8 @@
 argo_project: placeholder
 gcp_project: placeholder
 
+domain_suffix: example.com
+
 infra_repo_ssh_url: placeholder
 infra_repo_ref: HEAD
 

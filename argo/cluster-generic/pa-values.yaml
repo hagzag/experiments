@@ -8,6 +8,8 @@
 argo_project: pa
 gcp_project: pa
 
+domain_suffix: tensorleap.ai
+
 infra_repo_ssh_url: git@github.com:tensorleap/infra.git
 infra_repo_ref: HEAD
 

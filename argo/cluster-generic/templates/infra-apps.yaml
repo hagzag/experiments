@@ -151,11 +151,11 @@ spec:
     repoURL: {{ .Values.infra_repo_ssh_url }}
     path: .cd/bases/apps/external-ingress
     targetRevision: {{ .Values.infra_repo_ref }}
-    # helm:
-    #   values: |
-    #       service:
-    #         annotations:
-    #           external-dns.alpha.kubernetes.io/hostname: {{ .Values.argo_project }}-external.tensorleap.ai
+    helm:
+      values: |
+          service:
+            annotations:
+              external-dns.alpha.kubernetes.io/hostname: {{ .Values.argo_project }}-external.{{ .Values.domain_suffix }}
   destination:
     server: {{ .Values.destination_cluster }}
     namespace: ingress

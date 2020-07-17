@@ -46,59 +46,59 @@ spec:
   # see: https://cert-manager.io/docs/installation/kubernetes/
   # syncOptions:
   #   - Validate=false
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: {{ .Values.argo_project }}-external-dns
-  annotations:
-    argocd.argoproj.io/sync-wave: "-2"
-spec:
-  project: {{ .Values.argo_project }}
-  source:
-    repoURL: {{ .Values.infra_repo_ssh_url }}
-    path: .cd/bases/apps/external-dns
-    targetRevision: {{ .Values.infra_repo_ref }}
-    helm: 
-      values: |
-        sources:
-          # - crd
-          - service
-          - ingress
-        provider: google
-        google:
-          ## Google Project to use
-          ##
-          project: "{{ .Values.gcp_project }}"
-          ## Google Application Credentials
-          ##
-          serviceAccountSecret: "gcp-sa-secret"
-          # serviceAccountKey: "external-dns"
-          serviceAccountSecretKey: "key.json"
-        resources:
-          limits:
-            cpu: 50m
-            memory: 50Mi
-          requests:
-            memory: 50Mi
-            cpu: 10m
-        metrics:
-          enabled: false
-          namespace: monitoring
-          serviceMonitor:
-            enabled: false
-        nodeSelector:
-          cloud.google.com/gke-nodepool: default-pool
-        policy: sync
-        registry: "txt"
-        txtOwnerId: "{{ .Values.gcp_project }}"
-  destination:
-    server: {{ .Values.destination_cluster }}
-    namespace: kube-system
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: {{ .Values.argo_project }}-external-dns
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "-2"
+# spec:
+#   project: {{ .Values.argo_project }}
+#   source:
+#     repoURL: {{ .Values.infra_repo_ssh_url }}
+#     path: .cd/bases/apps/external-dns
+#     targetRevision: {{ .Values.infra_repo_ref }}
+#     helm: 
+#       values: |
+#         sources:
+#           # - crd
+#           - service
+#           - ingress
+#         provider: google
+#         google:
+#           ## Google Project to use
+#           ##
+#           project: "{{ .Values.gcp_project }}"
+#           ## Google Application Credentials
+#           ##
+#           serviceAccountSecret: "gcp-sa-secret"
+#           # serviceAccountKey: "external-dns"
+#           serviceAccountSecretKey: "key.json"
+#         resources:
+#           limits:
+#             cpu: 50m
+#             memory: 50Mi
+#           requests:
+#             memory: 50Mi
+#             cpu: 10m
+#         metrics:
+#           enabled: false
+#           namespace: monitoring
+#           serviceMonitor:
+#             enabled: false
+#         nodeSelector:
+#           cloud.google.com/gke-nodepool: default-pool
+#         policy: sync
+#         registry: "txt"
+#         txtOwnerId: "{{ .Values.gcp_project }}"
+#   destination:
+#     server: {{ .Values.destination_cluster }}
+#     namespace: kube-system
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
 
 ---
 apiVersion: argoproj.io/v1alpha1

@@ -8,7 +8,7 @@ spec:
   project: {{ .Values.argocd_project }}
   source:
     repoURL: {{ .Values.infra_repo_url }}
-    path: .cd/bases/apps/external-secrets
+    path: {{ .Values.apps.custom_metrics_stackdriver_adapter.path }}
     targetRevision: {{ .Values.infra_repo_ref }}
   destination:
     server: {{ .Values.destination_cluster }}

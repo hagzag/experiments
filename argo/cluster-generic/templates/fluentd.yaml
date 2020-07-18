@@ -15,7 +15,7 @@ spec:
       - values-production.yaml
   destination:
     server: {{ .Values.destination_cluster }}
-    namespace: {{ .Values.apps.external_dns.namespace }}
+    namespace: {{ .Values.apps.fluentd.namespace }}
   syncPolicy:
     automated:
       prune: true

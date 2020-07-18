@@ -21,12 +21,12 @@ spec:
             server:
               basePath: /kibana
               rewriteBasePath: true
-        elasticsearchHosts: "http://elasticsearch-master.{{.Values.apps.kibana.namespace}}:9200"
+        elasticsearchHosts: "http://elasticsearch-master.{{.Values.apps.elasticsearch.namespace}}:9200"
         nodeSelector:
           cloud.google.com/gke-nodepool: elastic-pool
   destination:
     server: {{ .Values.destination_cluster }}
-    namespace: {{ .Values.apps.external_dns.namespace }}
+    namespace: {{ .Values.apps.kibana.namespace }}
   syncPolicy:
     automated:
       prune: true

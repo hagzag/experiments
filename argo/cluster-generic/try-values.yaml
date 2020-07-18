@@ -7,54 +7,55 @@ argocd_namespace: argocd
 gcp_project: tensorleap-try
 domain_suffix: tensorleap.ai
 
-infra_repo_ssh_url: git@github.com:tensorleap/infra.git
+infra_repo_url: https://github.com/hagzag/experiments.git
+# infra_repo_url: git@github.com:tensorleap/infra.git
 infra_repo_ref: HEAD
 
-destination_cluster: https://35.223.193.33 
+destination_cluster: https://35.223.193.33
 destination_namespace: argocd
 
 apps:
-  external_dns: 
+  external_dns:
     enabled: true
     type: helm
     repoUrl: https://charts.jetstack.io
-    version: '2.21.0'
+    version: "2.21.0"
     namespace: kube-system
   external_secrets:
     enabled: true
     type: helm
-    repoUrl: 
-    version: 
-    namespace: kube-system 
+    repoUrl:
+    version:
+    namespace: kube-system
   cert_manager:
     enabled: true
     type: helm
     repoURL: https://charts.jetstack.io
-    version: 'v0.15.0-alpha.2'
+    version: "v0.15.0-alpha.2"
     namespace: kube-system
   elasticsearch:
     enabled: true
     type: helm
     repoURL: https://helm.elastic.co
-    version: '7.6.1'
+    version: "7.6.1"
     namespace: data
   kibana:
     enabled: true
     type: helm
     repoURL: https://helm.elastic.co
-    version: '7.6.1'
+    version: "7.6.1"
     namespace: data
   fluentd:
     enabled: true
     type: helm
     repoURL: https://charts.bitnami.com/bitnami
-    version: '1.2.1'
+    version: "1.2.1"
     namespace: data
   mongodb:
     enabled: true
     type: helm
     repoURL: https://charts.bitnami.com/bitnami
-    version: '7.10.12'
+    version: "7.10.12"
     namespace: data
   custom_metrics_stackdriver_adapter:
     type: kustomize
@@ -64,22 +65,22 @@ apps:
     version: HEAD
     namespace: custom-metrics
     sync_waves: true
-    sync_wave: '-2'
+    sync_wave: "-2"
   nfs_server_provisioner:
     enabled: true
     type: helm
     repoURL: https://kubernetes-charts.storage.googleapis.com
-    version: '1.0.0'
+    version: "1.0.0"
     namespace: data
   external_ingress:
     enabled: true
     type: helm
     repoURL: https://kubernetes-charts.storage.googleapis.com
-    version: '1.39.1'
+    version: "1.39.1"
     namespace: ingress
   internal_ingress:
     enabled: false
     type: helm
     repoURL: https://kubernetes-charts.storage.googleapis.com
-    version: '1.39.1'
+    version: "1.39.1"
     namespace: ingress

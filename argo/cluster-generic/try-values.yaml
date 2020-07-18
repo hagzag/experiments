@@ -2,9 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-argocd_project: pa
+argocd_project: try
 argocd_namespace: argocd
-gcp_project: tensorleap-pa
+gcp_project: tensorleap-try
 domain_suffix: tensorleap.ai
 
 infra_repo_ssh_url: git@github.com:tensorleap/infra.git

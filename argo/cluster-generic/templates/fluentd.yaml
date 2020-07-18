@@ -1,0 +1,23 @@
+{{- if .Values.apps.fluentd.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd_project }}-fluentd
+  namespace: {{ .Values.argocd_namespace }}
+spec:
+  project: {{ .Values.argocd_project }}
+  source:
+    chart: fluentd
+    repoURL: {{ .Values.apps.fluentd.repoURL }}
+    targetRevision: {{ .Values.apps.fluentd.version }}
+    helm:
+      valueFiles:
+      - values-production.yaml
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: {{ .Values.apps.external_dns.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

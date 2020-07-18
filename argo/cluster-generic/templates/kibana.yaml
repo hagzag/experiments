@@ -1,0 +1,34 @@
+{{- if .Values.apps.kibana.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd_project }}-kibana
+  namespace: {{ .Values.argocd_namespace }}
+spec:
+  project: {{ .Values.argocd_project }}
+  source:
+    chart: kibana
+    repoURL: {{ .Values.apps.kibana.repoURL }}
+    targetRevision: {{ .Values.apps.kibana.version }}
+    helm:
+      parameters:
+      - name: service.type
+        value: NodePort
+      values: |
+        healthCheckPath: "/kibana/app/kibana"
+        kibanaConfig: 
+          kibana.yml: |
+            server:
+              basePath: /kibana
+              rewriteBasePath: true
+        elasticsearchHosts: "http://elasticsearch-master.{{.Values.apps.kibana.namespace}}:9200"
+        nodeSelector:
+          cloud.google.com/gke-nodepool: elastic-pool
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: {{ .Values.apps.external_dns.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

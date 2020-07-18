@@ -1,0 +1,55 @@
+{{- if .Values.apps.external_dns.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd_project }}-external-dns
+  namespace: {{ .Values.argocd_namespace }}
+spec:
+  project: {{ .Values.argocd_project }}
+  source:
+    chart: external-dns
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 2.21.0
+    helm:
+      parameters:
+      - name: txtOwnerId
+        value: {{ .Values.gcp_project }}
+      values: |
+        sources:
+          # - crd
+          - service
+          - ingress
+        provider: google
+        google:
+          ## Google Project to use
+          ##
+          project: tensorleap-admin-3
+          ## Google Application Credentials
+          ##
+          serviceAccountSecret: global-dns-sa
+          # serviceAccountKey: "external-dns"
+          serviceAccountSecretKey: "key.json"
+        resources:
+          limits:
+            cpu: 50m
+            memory: 50Mi
+          requests:
+            memory: 50Mi
+            cpu: 10m
+        metrics:
+          enabled: false
+          namespace: monitoring
+          serviceMonitor:
+            enabled: true
+        nodeSelector:
+          cloud.google.com/gke-nodepool: default-pool
+        policy: sync
+        registry: "txt"
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: {{ .Values.apps.external_dns.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

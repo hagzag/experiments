@@ -1,0 +1,28 @@
+{{- if .Values.apps.nfs_server_provisioner.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd_project }}-nfs-server-provisioner
+spec:
+  project: {{ .Values.argocd_project }}
+  source:
+    chart: nfs-server-provisioner
+    repoURL: {{ .Values.apps.nfs_server_provisioner.repoURL }}
+    targetRevision: {{ .Values.apps.nfs_server_provisioner.version }}
+    helm: |
+      storageClass:
+        # intentional so we don't loose data
+        reclaimPolicy: "Retain"
+      persistence:
+        enabled: true
+        size: 300Gi
+      nodeSelector:
+        cloud.google.com/gke-nodepool: default-pool
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: {{ .Values.apps.nfs_server_provisioner.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

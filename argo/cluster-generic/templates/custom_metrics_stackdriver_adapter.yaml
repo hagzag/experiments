@@ -1,0 +1,20 @@
+{{- if .Values.apps.custom_metrics_stackdriver_adapter.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd_project }}-custom-metrics-stackdriver-adapter
+  namespace: {{ .Values.argocd_namespace }}
+spec:
+  project: {{ .Values.argocd_project }}
+  source:
+    repoURL: {{ .Values.infra_repo_url }}
+    path: .cd/bases/apps/external-secrets
+    targetRevision: {{ .Values.infra_repo_ref }}
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

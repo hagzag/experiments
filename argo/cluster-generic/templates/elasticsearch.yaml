@@ -1,0 +1,26 @@
+{{- if .Values.apps.elasticsearch.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd_project }}-elasticsearch
+  namespace: {{ .Values.argocd_namespace }}
+spec:
+  project: {{ .Values.argocd_project }}
+  source:
+    chart: elasticsearch
+    repoURL: {{ .Values.apps.elasticsearch.repoURL }}
+    targetRevision: {{ .Values.apps.elasticsearch.version }}
+    helm:
+      values: |
+        clusterName: "elasticsearch"
+        nodeGroup: "master"
+        nodeSelector:
+          cloud.google.com/gke-nodepool: elastic-pool
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: {{ .Values.apps.elasticsearch.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

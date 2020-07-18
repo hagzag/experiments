@@ -1,0 +1,38 @@
+{{- if .Values.apps.external_ingress.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd_project }}-external-dns
+  namespace: {{ .Values.argocd_namespace }}
+spec:
+  project: {{ .Values.argocd_project }}
+  source:
+    chart: nginx-ingress
+    repoURL: {{ .Values.apps.external_ingress.repoURL }}
+    targetRevision: {{ .Values.apps.external_ingress.version }}
+    helm:
+      values: |
+        controller:
+          containerPort:
+            http: 80
+            https: 443
+          publishService:
+            enabled: true
+          ingressClass: nginx
+          service:
+            annotations:
+              external-dns.alpha.kubernetes.io/hostname: ing-ext-{{ .Values.argocd_project }}.{{.Values.domain_suffix }}
+          autoscaling:
+            enabled: true
+            maxReplicas: 6
+            minReplicas: 2
+            targetCPUUtilizationPercentage: 50
+            targetMemoryUtilizationPercentage: 50
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: {{ .Values.apps.external_ingress.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

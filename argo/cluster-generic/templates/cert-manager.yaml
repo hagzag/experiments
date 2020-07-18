@@ -1,0 +1,60 @@
+{{- if .Values.apps.cert_manager.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd_project }}-cert-manager
+  namespace: {{ .Values.argocd_namespace }}
+spec:
+  project: {{ .Values.argocd_project }}
+  source:
+    chart: cert-manager
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: v0.15.0-alpha.2
+    helm:
+      values: |
+        installCRDs: true
+        ingressShim:
+          defaultACMEChallengeType: dns01
+          defaultACMEDNS01ChallengeProvider: clouddns
+          defaultIssuerGroup: cert-manager.io
+          defaultIssuerKind: ClusterIssuer
+          defaultIssuerName: letsencrypt-prod
+        nodeSelector:
+          cloud.google.com/gke-nodepool: default-pool
+        prometheus:
+          enabled: false
+          servicemonitor:
+            enabled: true
+            interval: 60s
+            labels:
+              release: prometheus-operator
+            path: /metrics
+            prometheusInstance: default
+            scrapeTimeout: 30s
+            targetPort: 9402
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+        webhook:
+          enabled: true
+          nodeSelector:
+            cloud.google.com/gke-nodepool: default-pool
+          replicaCount: 1
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+          strategy:
+            rollingUpdate:
+              maxSurge: 0
+              maxUnavailable: 1
+            type: RollingUpdate
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: {{ .Values.apps.cert_manager.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

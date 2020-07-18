@@ -1,0 +1,29 @@
+{{- if .Values.apps.mongodb.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd_project }}-mongodb
+  namespace: {{ .Values.argocd_namespace }}
+spec:
+  project: {{ .Values.argocd_project }}
+  source:
+    chart: mongodb
+    repoURL: {{ .Values.apps.mongodb.repoURL }}
+    targetRevision: {{ .Values.apps.mongodb.version }}
+    helm:
+      values: |
+        usePassword: false
+        replicaSet:
+          enabled: true
+        updateStrategy:
+          type: RollingUpdate
+        nodeSelector:
+        cloud.google.com/gke-nodepool: default-pool
+  destination:
+    server: {{ .Values.destination_cluster }}
+    namespace: {{ .Values.apps.mongodb.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

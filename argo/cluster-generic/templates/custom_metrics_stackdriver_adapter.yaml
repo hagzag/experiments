@@ -12,7 +12,7 @@ spec:
     targetRevision: {{ .Values.infra_repo_ref }}
   destination:
     server: {{ .Values.destination_cluster }}
-    namespace: kube-system
+    namespace: {{ .Values.apps.custom_metrics_stackdriver_adapter.namespace }}
   syncPolicy:
     automated:
       prune: true

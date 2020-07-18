@@ -11,6 +11,8 @@ spec:
     repoURL: {{ .Values.apps.mongodb.repoURL }}
     targetRevision: {{ .Values.apps.mongodb.version }}
     helm:
+      valueFiles:
+        - values-production.yaml
       values: |
         fullnameOverride: mongodb
         usePassword: false

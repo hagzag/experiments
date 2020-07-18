@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: custom-metrics-stackdriver-adapter
-  namespace: custom-metrics
   labels:
     run: custom-metrics-stackdriver-adapter
     k8s-app: custom-metrics-stackdriver-adapter

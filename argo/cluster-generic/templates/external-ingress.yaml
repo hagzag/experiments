@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Values.argocd_project }}-external-dns
+  name: {{ .Values.argocd_project }}-nginx-ingress
   namespace: {{ .Values.argocd_namespace }}
 spec:
   project: {{ .Values.argocd_project }}

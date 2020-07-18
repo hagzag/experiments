@@ -30,3 +30,8 @@ metadata:
   name: cert-manager
   labels:
     cert-manager.k8s.io/disable-validation: "true"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: custom-metrics

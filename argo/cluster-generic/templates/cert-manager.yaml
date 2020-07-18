@@ -8,8 +8,8 @@ spec:
   project: {{ .Values.argocd_project }}
   source:
     chart: cert-manager
-    repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: v0.15.0-alpha.2
+    repoURL: {{ .Values.apps.cert_manager.repoURL }}
+    targetRevision: {{ .Values.apps.cert_manager.version }}
     helm:
       values: |
         installCRDs: true

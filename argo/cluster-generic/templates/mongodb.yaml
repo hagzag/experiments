@@ -12,6 +12,7 @@ spec:
     targetRevision: {{ .Values.apps.mongodb.version }}
     helm:
       values: |
+        fullnameOverride: mongodb
         usePassword: false
         replicaSet:
           enabled: true

@@ -1,0 +1,160 @@
+additionalApplications:
+  - name: argo-cd-tikal
+    namespace: argocd
+    project: default
+    source:
+      repoURL: git@gitlab.com:tikalk.com/infrastructure/tikal-infra.git
+      targetRevision: tikal-infra
+      path: tikal-infra/prod/eu-central-1/argocd/files/argo-cd
+    destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: false
+
+server:
+  # true val & salt saved in master vault
+  # 
+  # kubectl -n argocd patch secret argocd-secret \
+  # -p '{"stringData": {
+  #   "admin.password": "$2y$12$fP1uNtoZ3rWopET6KPn91udNyWQ0xO.GbC6xnrLrKpwYl6IdtcHwa",
+  #   "admin.passwordMtime": "'$(date +%FT%T%Z)'"
+  # }}'
+  argocdServerAdminPassword: "$2y$12$fP1uNtoZ3rWopET6KPn91udNyWQ0xO.GbC6xnrLrKpwYl6IdtcHwa"
+  # image:
+  #   tag: v2.0.0-rc1
+  # logFormat: json
+  resources: {}
+  #  limits:
+  #    cpu: 1000m
+  #    memory: 1024Mi
+  #  requests:
+  #    cpu: 500m
+  #    memory: 512Mi
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 50
+    targetMemoryUtilizationPercentage: 50
+  service:
+    type: LoadBalancer
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: argocd.infra.tikalk.dev,
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: https
+    spec:
+      ports:
+      - name: http
+        port: 80
+        protocol: TCP
+        targetPort: 8080
+      - name: https
+        port: 443
+        protocol: TCP
+        targetPort: 8080
+  # metrics:
+  #   enabled: true
+  #   service:
+  #     annotations:
+  #       release: prometheus-stack
+  #     labels:
+  #       release: prometheus-stack
+  #     servicePort: 8083
+  #   serviceMonitor:
+  #     enabled: true
+  #     selector:
+  #       release: prometheus-stack
+  #   #   namespace: monitoring
+  #     additionalLabels:
+  #       release: prometheus-stack
+  config:
+    url: https://argocd.infra.tikalk.dev
+    accounts.opsuser: apiKey, login
+    accounts.gitlab: apiKey
+    statusbadge.enabled: "true"
+    admin.enabled: "true"
+    repositories: |-
+
+      - name: club
+        sshPrivateKeySecret:
+          key: sshPrivateKey
+          name: infra-ssh-key
+        type: git
+        url: git@gitlab.com:tikal-internal/club.git
+      - name: octopus
+        sshPrivateKeySecret:
+          key: sshPrivateKey
+          name: infra-ssh-key
+        type: git
+        url: git@gitlab.com:tikalk.com/internal/octopus.git
+      - name: base-services
+        sshPrivateKeySecret:
+          key: sshPrivateKey
+          name: infra-ssh-key
+        type: git
+        url: git@gitlab.com:tikalk.com/infrastructure/base-services.git
+      - name: tikal-infra
+        sshPrivateKeySecret:
+          key: sshPrivateKey
+          name: infra-ssh-key
+        type: git
+        url: git@gitlab.com:tikalk.com/infrastructure/tikal-infra.git
+      - name: prometheus-community
+        type: helm
+        url: https://prometheus-community.github.io/helm-charts
+      - name: ingress-nginx
+        type: helm
+        url: https://kubernetes.github.io/ingress-nginx
+      - name: jetstack
+        type: helm
+        url: https://charts.jetstack.io
+      - name: bitnami
+        type: helm
+        url: https://charts.bitnami.com/bitnami
+      - name: codecentric
+        type: helm
+        url: https://codecentric.github.io/helm-charts
+      - name: external-secrets
+        type: helm
+        url: https://external-secrets.github.io/kubernetes-external-secrets
+      - name: grafana
+        type: helm
+        url: https://grafana.github.io/helm-charts
+
+repoServer:
+  # image:
+  #   tag: v2.0.0-rc1
+  # logFormat: json
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 256Mi
+    # requests:
+    #   cpu: 50m
+    #   memory: 128Mi
+  # metrics:
+  #   enabled: true
+  #   service:
+  #     annotations:
+  #       release: prometheus-stack
+  #     labels:
+  #       release: prometheus-stack
+  #     servicePort: 8084
+  #   serviceMonitor:
+  #     enabled: true
+  #     selector:
+  #       release: prometheus-stack
+  #     additionalLabels:
+  #       release: prometheus-stack
+
+redis:
+  resources:
+   limits:
+     cpu: 200m
+     memory: 128Mi
+   requests:
+     cpu: 100m
+     memory: 64Mi

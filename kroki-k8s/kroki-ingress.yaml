@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kroki
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: nginx 
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    external-dns.alpha.kubernetes.io/hostname: kroki.tikalk.dev,kroki.infra.tikalk.dev
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+spec:
+  rules:
+    - host: kroki.tikalk.dev
+      http:
+        paths:
+        - backend:
+            serviceName: kroki
+            servicePort: 8000
+          path: /
+          pathType: ImplementationSpecific
+    - host: kroki.infra.tikalk.dev
+      http:
+        paths:
+        - backend:
+            serviceName: kroki
+            servicePort: 8000
+          path: /
+          pathType: ImplementationSpecific

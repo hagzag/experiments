@@ -26,3 +26,8 @@ spec:
             servicePort: http
           path: /
           pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - kroki.tikalk.dev
+    - kroki.infra.tikalk.dev
+    secretName: kroki.tikalk.dev-tls

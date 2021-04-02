@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
+  annotations: {}
   labels:
     app: kroki
   name: kroki
@@ -27,6 +27,13 @@ spec:
           value: mermaid
         image: yuzutech/kroki
         name: kroki
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         ports:
         - containerPort: 8000
       restartPolicy: Always

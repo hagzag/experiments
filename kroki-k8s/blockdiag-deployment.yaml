@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
+  annotations: {}
   labels:
     app: blockdiag
   name: blockdiag

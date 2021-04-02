@@ -15,7 +15,7 @@ spec:
         paths:
         - backend:
             serviceName: kroki
-            servicePort: 8000
+            servicePort: http
           path: /
           pathType: ImplementationSpecific
     - host: kroki.infra.tikalk.dev

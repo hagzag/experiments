@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
+  annotations: {}
   labels:
     app: excalidraw
   name: excalidraw
@@ -20,4 +20,11 @@ spec:
         name: excalidraw
         ports:
         - containerPort: 8004
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
       restartPolicy: Always
